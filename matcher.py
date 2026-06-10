@@ -1,8 +1,41 @@
 import numpy as np
+import spacy
 from sentence_transformers import SentenceTransformer,util
 
 # model loading
 model=SentenceTransformer('all-MiniLM-L6-v2')
+nlp=spacy.load('en_core_web_sm')
+
+def find_keywords(des:str)->list:
+    keywords=[]
+    doc=nlp(des)
+    for chunk in doc.noun_chunks:
+        keywords.append(chunk.text.lower())
+    return keywords
+
+def missing_skills(jd:str,resume:str)->list:
+    # jd_skills=find_keywords(jd)
+    # resume_skills=find_keywords(resume)
+
+    # missing=[]
+
+    # for ele in jd_skills:
+    #     if ele not in resume_skills:
+    #         missing.append(ele)
+
+    # return f'Missing skills: {missing}'
+
+    jd_skills = find_keywords(jd)
+    resume_lower = resume.lower()  # raw text, not chunks
+
+    missing = []
+    for skill in jd_skills:
+        if skill not in resume_lower:  # check in raw text
+            missing.append(skill)
+
+    return f'Missing skills: {missing}'
+
+
 
 def compute_match_score(resume_text:str,jd_text: str)->float:
     '''
@@ -17,7 +50,7 @@ def compute_match_score(resume_text:str,jd_text: str)->float:
 
     similarity=util.cos_sim(emb_resume,emb_jd)
 
-    return round(float(similarity) * 100, 1)
+    return f'Matching Score: {round(float(similarity) * 100, 1)}'
 
 # testing
 if __name__=="__main__":
@@ -25,6 +58,8 @@ if __name__=="__main__":
     jd = "Hiring Python programmer with ML background"
 
     score=compute_match_score(resume,jd)
+    miss=missing_skills(jd,resume)
     print(score)
+    print(miss)
 
     
