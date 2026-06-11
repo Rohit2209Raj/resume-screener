@@ -56,8 +56,8 @@ async def match_resume( resume:UploadFile=File(...), jd_text:str=Form(...)):
     miss = missing_skills(jd_text,resume_text)
 
     return{
-        'resume_text: ':resume_text,
-        'matching score is: ':score,
-        'Missing keywords ':miss
+        # 'resume_text: ':resume_text,
+        'match_score':score,
+        'Missing_keywords':miss
     }
     

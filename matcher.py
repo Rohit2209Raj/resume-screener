@@ -36,7 +36,7 @@ def missing_skills(des:str,resume:str)->list:
     # return f'Missing skills: {missing}'
 
     
-    des = des.replace('\n', ' ').replace('|', ' ').replace('–', ' ')  # add this line
+    des = des.replace('\n', ' ').replace('|', ' ').replace('-', ' ')  # add this line
     keywords = []
     doc = nlp(des)
     for chunk in doc.noun_chunks:
@@ -62,7 +62,9 @@ def compute_match_score(jd_text:str,resume_text: str)->float:
 
     similarity=util.cos_sim(emb_resume,emb_jd)
 
-    return f'Matching Score: {round(float(similarity) * 100, 1)}'
+    # return f'Matching Score: {round(float(similarity) * 100, 1)}'
+    return round(float(similarity) * 100, 1)
+
 
 # testing
 if __name__=="__main__":
