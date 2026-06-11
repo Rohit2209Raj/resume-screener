@@ -70,5 +70,5 @@ resume-screener/
 - Scanned PDF resumes (image based) may not extract text correctly
 
 ## Author
-Rohit Raj — B.Tech CSE, Poornima College of Engineering
-GitHub: github.com/Rohit2209Raj
+- Rohit Raj — B.Tech CSE, Poornima College of Engineering
+- GitHub: github.com/Rohit2209Raj
