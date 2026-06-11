@@ -14,8 +14,7 @@ resume=st.file_uploader("Upload your resume in pdf",type='pdf')
 jd_text = st.text_area("Paste the job description here", height=200)
 
 
-# checking
-
+# checking if both resume and jd_text exist
 if st.button("Analyze"):
     if not resume:
         st.error("Upload your resume file")
@@ -30,9 +29,10 @@ if st.button("Analyze"):
                 files={"resume":resume}
             )
             result=response.json()
-            # st.write(result)
 
             st.subheader("Results..")
+
+            # Based on score output the result
 
             score = float(result['match_score'])
 
@@ -44,6 +44,8 @@ if st.button("Analyze"):
                 st.error(f"Match Score: {score}%")
             
             st.subheader("Missing_keywords")
+
+            # output the missing keywords if any
 
             missing = result["Missing_keywords"]
             if missing:
