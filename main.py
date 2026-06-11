@@ -1,4 +1,4 @@
-from fastapi import FastAPI,File,UploadFile,Form
+from fastapi import FastAPI,File,UploadFile,Form,HTTPException
 from pydantic import BaseModel
 import shutil,os
 from matcher import compute_match_score,missing_skills
@@ -20,6 +20,19 @@ def end_point(jd:JDINPUT):
 @app.post('/match')
 async def match_resume( resume:UploadFile=File(...), jd_text:str=Form(...)):
     # step 1 save uploaded pdf temporarly
+
+    if not resume.filename.endswith(".pdf"):
+        raise HTTPException(
+            status_code=400,
+            detail="Only pdf files are allowed"
+        )
+    
+    if not jd_text.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Job decription cannot be empty"
+        )
+
     temp_path=f"temp_{resume.filename}"
     with open(temp_path,'wb') as f:
         shutil.copyfileobj(resume.file,f)
@@ -28,7 +41,11 @@ async def match_resume( resume:UploadFile=File(...), jd_text:str=Form(...)):
 
     resume_text = extract_words(temp_path)
 
-
+    if not resume_text.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Could not extract text from PDF. Make sure it is not a scanned image."
+        )
     # step 3 remove/delete temp path
 
     os.remove(temp_path)
