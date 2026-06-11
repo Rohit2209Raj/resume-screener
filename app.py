@@ -1,17 +1,33 @@
 import streamlit as st
 import requests
 
+# Page config — add this at the very top
+st.set_page_config(
+    page_title="AI Resume Screener",
+    page_icon="📄",
+    layout="centered"
+)
+
 # title
 st.title("AI resume analyser")
 
 st.write("Upload your resume and paste the job description to see how well you match")
 
+# Add a divider
+st.divider()
 
-# file uploader
-resume=st.file_uploader("Upload your resume in pdf",type='pdf')
+# Two columns for inputs
+col1, col2 = st.columns(2)
 
-# JD text area
-jd_text = st.text_area("Paste the job description here", height=200)
+with col1:
+    resume = st.file_uploader("Upload Resume (PDF)", type="pdf")
+
+with col2:
+    st.write("")  # spacing
+
+jd_text = st.text_area("Paste Job Description here", height=200)
+
+st.divider()
 
 
 # checking if both resume and jd_text exist
@@ -37,11 +53,11 @@ if st.button("Analyze"):
             score = float(result['match_score'])
 
             if score >= 70:
-                st.success(f"Match Score: {score}%")
+                st.success(f"✅ Match Score: {score}%")
             elif score >= 50:
-                st.warning(f"Match Score: {score}%")
+                st.warning(f"⚠️ Match Score: {score}%")
             else:
-                st.error(f"Match Score: {score}%")
+                st.error(f"❌ Match Score: {score}%")
             
             st.subheader("Missing_keywords")
 
@@ -52,6 +68,6 @@ if st.button("Analyze"):
                 for skill in missing:
                     st.write(f"• {skill}")
             else:
-                st.write("No missing keywords found!")
+                st.write("✅ No missing keywords found!")
 
 
