@@ -13,7 +13,7 @@ def find_keywords(des:str)->list:
         keywords.append(chunk.text.lower())
     return keywords
 
-def missing_skills(jd:str,resume:str)->list:
+def missing_skills(des:str,resume:str)->list:
     # jd_skills=find_keywords(jd)
     # resume_skills=find_keywords(resume)
 
@@ -25,19 +25,31 @@ def missing_skills(jd:str,resume:str)->list:
 
     # return f'Missing skills: {missing}'
 
-    jd_skills = find_keywords(jd)
-    resume_lower = resume.lower()  # raw text, not chunks
+    # jd_skills = find_keywords(jd)
+    # resume_lower = resume.lower()  # raw text, not chunks
 
-    missing = []
-    for skill in jd_skills:
-        if skill not in resume_lower:  # check in raw text
-            missing.append(skill)
+    # missing = []
+    # for skill in jd_skills:
+    #     if skill not in resume_lower:  # check in raw text
+    #         missing.append(skill)
 
-    return f'Missing skills: {missing}'
+    # return f'Missing skills: {missing}'
+
+    
+    des = des.replace('\n', ' ')  # add this line
+    keywords = []
+    doc = nlp(des)
+    for chunk in doc.noun_chunks:
+        parts = chunk.text.lower().split(',')
+        for part in parts:
+            cleaned = part.strip()
+            if cleaned:
+                keywords.append(cleaned)
+    return keywords
 
 
 
-def compute_match_score(resume_text:str,jd_text: str)->float:
+def compute_match_score(jd_text:str,resume_text: str)->float:
     '''
     Takes resume text and jd text
     and return similarity score between 0 and 100
