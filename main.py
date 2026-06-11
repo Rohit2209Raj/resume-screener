@@ -1,5 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,File,UploadFile,Form
 from pydantic import BaseModel
+import shutil,os
+from matcher import compute_match_score,missing_skills
+from utils import extract_words
 
 app = FastAPI()
 
@@ -13,3 +16,31 @@ def home():
 @app.post('/test')
 def end_point(jd:JDINPUT):
     return {'received':jd.jd_text}
+
+@app.post('/match')
+async def match_resume( resume:UploadFile=File(...), jd_text:str=Form(...)):
+    # step 1 save uploaded pdf temporarly
+    temp_path=f"temp_{resume.filename}"
+    with open(temp_path,'wb') as f:
+        shutil.copyfileobj(resume.file,f)
+
+    # step 2 extract text from temp_path
+
+    resume_text = extract_words(temp_path)
+
+
+    # step 3 remove/delete temp path
+
+    os.remove(temp_path)
+
+    # step 4 compute matching socre and missing
+
+    score = compute_match_score(jd_text,resume_text)
+    miss = missing_skills(jd_text,resume_text)
+
+    return{
+        'resume_text: ':resume_text,
+        'matching score is: ':score,
+        'Missing keywords ':miss
+    }
+    

@@ -36,7 +36,7 @@ def missing_skills(des:str,resume:str)->list:
     # return f'Missing skills: {missing}'
 
     
-    des = des.replace('\n', ' ')  # add this line
+    des = des.replace('\n', ' ').replace('|', ' ').replace('–', ' ')  # add this line
     keywords = []
     doc = nlp(des)
     for chunk in doc.noun_chunks:
