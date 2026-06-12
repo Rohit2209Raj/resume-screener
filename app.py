@@ -39,6 +39,8 @@ if st.button("Analyze"):
     else:
         with st.spinner("Analyzing your resume..."):
             st.success("Both inputs received. Ready to analyze.")
+
+            # calling the match hitpoint from main.py
             response=requests.post(
                 "http://localhost:8000/match",
                 data={"jd_text":jd_text},
@@ -48,9 +50,11 @@ if st.button("Analyze"):
 
             st.subheader("Results..")
 
-            # Based on score output the result
+            # converted the score here to float for comparison
 
             score = float(result['match_score'])
+
+            # displaying different output based on scores
 
             if score >= 70:
                 st.success(f"✅ Match Score: {score}%")
