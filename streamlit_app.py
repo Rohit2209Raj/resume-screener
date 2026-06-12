@@ -63,7 +63,7 @@ if st.button("Analyze"):
 
         st.subheader("Missing Keywords")
 
-        missing = result["missing_skills"]
+        missing = result["Missing_keywords"]
         if missing:
             for skill in missing:
                 st.write(f"• {skill}")
