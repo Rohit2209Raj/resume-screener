@@ -4,7 +4,7 @@ title: Resume Screener
 emoji: 📄
 colorFrom: blue
 colorTo: green
-sdk: docker
+sdk: streamlit
 app_file: streamlit_app.py
 pinned: false
 ---
