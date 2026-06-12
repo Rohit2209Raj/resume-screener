@@ -1,3 +1,15 @@
+
+---
+title: Resume Screener
+emoji: 📄
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_file: streamlit_app.py
+pinned: false
+---
+
+
 # AI Resume Screener
 
 A web application that matches a resume against a job description using NLP and semantic similarity.
