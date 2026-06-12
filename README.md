@@ -9,6 +9,8 @@ app_file: streamlit_app.py
 pinned: false
 ---
 
+## Live Demo
+https://huggingface.co/spaces/YudiCadini/resume-screener
 
 # AI Resume Screener
 
